@@ -29,6 +29,10 @@ namespace SuperIntW64 {
 		/// Creates a new super integer object.
 		/// </summary>
 		superint(std::string sNumber);
+		///<summary>
+		/// Creates a new super integer object.
+		/// </summary>
+		superint(long lNumber);
 		/// <summary>
 		/// Creates a new super integer object.
 		/// </summary>
@@ -64,7 +68,13 @@ namespace SuperIntW64 {
 		/// <param name="siNumber2"></param>
 		/// <returns></returns>
 		static superint* Div(superint* siNumber1, superint* siNumber2);
-
+		/// <summary>
+		/// Returns the remainder of two super integers.
+		/// </summary>
+		/// <param name="siNumber1"></param>
+		/// <param name="siNumber2"></param>
+		/// <returns></returns>
+		static superint* Mod(superint* siNumber1, superint* siNumber2);
 		/// <summary>
 		/// Checks if a super integer is greater than another super integer.
 		/// </summary>

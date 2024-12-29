@@ -6,6 +6,7 @@
 #include "pch.h"
 #include "framework.h"
 #include "superint.h"
+#include "supermath.h"
 
 using namespace SuperIntW64;
 
@@ -24,6 +25,7 @@ superint::superint() {
 	this->_isReady = true;
 	this->vNumber = { 0 };
 }
+
 superint::superint(std::string sNumber) {
 	this->_isNegative = isNumberNegative(sNumber);
 
@@ -42,6 +44,10 @@ superint::superint(std::string sNumber) {
 	} else {
 		throw std::exception("Invalid number");
 	}
+}
+
+superint::superint(long lNumber) {
+	superint(std::to_string(lNumber));
 }
 
 superint::superint(std::vector<int> vNumber) {
@@ -195,6 +201,43 @@ superint* superint::Mult(superint* siNumber1, superint* siNumber2) {
 
 	return siResult;
 }
+
+superint* superint::Div(superint* siNumber1, superint* siNumber2) {
+	// x / y = z
+	// y * z = x
+
+	// if y < x, answer is 0
+	if (IsLesser(siNumber1, siNumber2)) {
+		return new superint(0);
+	}
+
+	// set up our pivots
+	superint* min = new superint(1);
+	superint* max = siNumber2;
+	superint* pivot = supermath::Random(min, max);
+
+	// while y * z != x
+	while (!superint::IsEqual(superint::Mult(siNumber2, pivot), siNumber1)) {
+		// if y * z + r = x, return z
+		if (superint::IsLesser(superint::Sub(siNumber1, pivot), siNumber1)) {
+			return pivot;
+		}
+
+		// if y * z + r != x, adjust the limits of z
+		if (superint::IsGreater(superint::Mult(siNumber2, pivot), siNumber1)) {
+			max = pivot;
+		} else {
+			min = pivot;
+		}
+
+		// re calculate z
+		pivot = supermath::Random(min, max);
+	}
+
+	// y * z = x
+	return pivot;
+}
+
 
 bool superint::isValidNumber(std::string sNumber) {
 	if (sNumber.size() >= 1) {

@@ -24,12 +24,18 @@
     <ClInclude Include="superint.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="supermath.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SuperIntW64.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="pch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="supermath.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
