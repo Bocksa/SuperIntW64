@@ -77,44 +77,52 @@ std::string superint::ToString() {
 	return sNumber;
 }
 
-superint* superint::Add(superint siNumber1, superint siNumber2) {
+superint* superint::Add(superint* siNumber1, superint* siNumber2) {
 	superint* siResult = new superint();
 
-	std::vector<int> vResult;
-	std::vector<int> vNumber1 = siNumber1.GetVector();
-	std::vector<int> vNumber2 = siNumber2.GetVector();
+	superint* usiNumber1 = new superint(siNumber1->vNumber);
+	superint* usiNumber2 = new superint(siNumber2->vNumber);
 
-	// Swap the two numbers so vNumber1 is always the larger number.
-	if (vNumber1.size() < vNumber2.size()) {
-		std::swap(vNumber1, vNumber2);
-	}
-
-	// Add every index together.
-	for (int i = 0; i < vNumber1.size(); i++) {
-		if (i < vNumber2.size()) {
-			vResult.push_back(vNumber1[i] + vNumber2[i]);
+	// Executes the correct unsigned operation then adds the sign to the result.
+	if (siNumber1->IsNegative() && siNumber2->IsNegative()) {
+		siResult = _uAdd(usiNumber1, usiNumber2);
+		siResult->_isNegative = true;
+	} else if (!siNumber1->IsNegative() && !siNumber2->IsNegative()) {
+		siResult = _uAdd(usiNumber1, usiNumber2);
+		siResult->_isNegative = false;
+	} else {
+		if (IsGreater(usiNumber2, usiNumber1) && siNumber2->IsNegative()) {
+			siResult = _uSub(usiNumber2, usiNumber1);
+			siResult->_isNegative = true;
+		} else if (IsGreater(usiNumber2, usiNumber1) && !siNumber2->IsNegative()) {
+			siResult = _uAdd(usiNumber2, usiNumber1);
+			siResult->_isNegative = false;
+		} else if (IsGreater(usiNumber1, usiNumber2) && !siNumber2->IsNegative()) {
+			siResult = _uSub(usiNumber1, usiNumber2);
+			siResult->_isNegative = false;
 		} else {
-			vResult.push_back(vNumber1[i]);
+			siResult = _uSub(usiNumber1, usiNumber2);
+			siResult->_isNegative = true;
 		}
 	}
 
-	siResult->vNumber = vResult;
+	siResult->format();
 
 	return siResult;
 }
 
-superint* superint::_uAdd(superint usiNumber1, superint usiNumber2) {
+superint* superint::_uAdd(superint* usiNumber1, superint* usiNumber2) {
 	superint* usiResult = new superint();
 
-	if (usiNumber1.vNumber.size() < usiNumber2.vNumber.size()) {
-		std::swap(usiNumber1.vNumber, usiNumber2.vNumber);
+	if (usiNumber1->vNumber.size() < usiNumber2->vNumber.size()) {
+		std::swap(usiNumber1->vNumber, usiNumber2->vNumber);
 	}
 
-	for (int i = 0; i < usiNumber1.vNumber.size(); i++) {
-		if (i < usiNumber2.vNumber.size()) {
-			usiResult->vNumber[i] = usiNumber1.vNumber[i] + usiNumber2.vNumber[i];
+	for (int i = 0; i < usiNumber1->vNumber.size(); i++) {
+		if (i < usiNumber2->vNumber.size()) {
+			usiResult->vNumber[i] = usiNumber1->vNumber[i] + usiNumber2->vNumber[i];
 		} else {
-			usiResult->vNumber[i] = usiNumber1.vNumber[i];
+			usiResult->vNumber[i] = usiNumber1->vNumber[i];
 		}
 	}
 
@@ -123,7 +131,11 @@ superint* superint::_uAdd(superint usiNumber1, superint usiNumber2) {
 	return usiResult;
 }
 
-superint* superint::_uSub(superint usiNumber1, superint usiNumber2) {
+superint* superint::Sub(superint* siNumber1, superint* siNumber2) {
+	superint* siResult = new superint();
+}
+
+superint* superint::_uSub(superint* usiNumber1, superint* usiNumber2) {
 	superint* usiResult = new superint();
 
 	// Ladies and gentlemen, lets not sign the unsigned.
@@ -132,11 +144,11 @@ superint* superint::_uSub(superint usiNumber1, superint usiNumber2) {
 	}
 
 	// Takes the two numbers away from eachother at each index.
-	for (int i = 0; i < usiNumber1.vNumber.size(); i++) {
-		if (i < usiNumber2.vNumber.size()) {
-			usiResult->vNumber[i] = usiNumber1.vNumber[i] - usiNumber2.vNumber[i];
+	for (int i = 0; i < usiNumber1->vNumber.size(); i++) {
+		if (i < usiNumber2->vNumber.size()) {
+			usiResult->vNumber[i] = usiNumber1->vNumber[i] - usiNumber2->vNumber[i];
 		} else {
-			usiResult->vNumber[i] = usiNumber1.vNumber[i];
+			usiResult->vNumber[i] = usiNumber1->vNumber[i];
 		}
 	}
 

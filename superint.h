@@ -43,27 +43,27 @@ namespace SuperIntW64 {
 		/// </summary>
 		/// <param name="siNumber"></param>
 		/// <returns></returns>
-		static superint* Add(superint siNumber1, superint siNumber2);
+		static superint* Add(superint* siNumber1, superint* siNumber2);
 		/// <summary>
 		/// Subtracts two super integers from eachother.
 		/// </summary>
 		/// <param name="siNumber"></param>
 		/// <returns></returns>
-		static superint* Sub(superint siNumber1, superint siNumber2);
+		static superint* Sub(superint* siNumber1, superint* siNumber2);
 		/// <summary>
 		/// Multiplies two super integers together
 		/// </summary>
 		/// <param name="siNumber1"></param>
 		/// <param name="siNumber2"></param>
 		/// <returns></returns>
-		static superint* Mult(superint siNumber1, superint siNumber2);
+		static superint* Mult(superint* siNumber1, superint* siNumber2);
 		/// <summary>
 		/// Divides two super integers from eachother.
 		/// </summary>
 		/// <param name="siNumber1"></param>
 		/// <param name="siNumber2"></param>
 		/// <returns></returns>
-		static superint* Div(superint siNumber1, superint siNumber2);
+		static superint* Div(superint* siNumber1, superint* siNumber2);
 
 		/// <summary>
 		/// Checks if a super integer is greater than another super integer.
@@ -71,21 +71,21 @@ namespace SuperIntW64 {
 		/// <param name="siNumber1"></param>
 		/// <param name="siNumber2"></param>
 		/// <returns></returns>
-		static bool IsGreater(superint siNumber1, superint siNumber2);
+		static bool IsGreater(superint* siNumber1, superint* siNumber2);
 		/// <summary>
 		/// Checks if a super integer is lesser than another super integer.
 		/// </summary>
 		/// <param name="siNumber1"></param>
 		/// <param name="siNumber2"></param>
 		/// <returns></returns>
-		static bool IsLesser(superint siNumber1, superint siNumber2);
+		static bool IsLesser(superint* siNumber1, superint* siNumber2);
 		/// <summary>
 		/// Checks if a super integer is equal to another super integer.
 		/// </summary>
 		/// <param name="siNumber1"></param>
 		/// <param name="siNumber2"></param>
 		/// <returns></returns>
-		static bool IsEqual(superint siNumber1, superint siNumber2);
+		static bool IsEqual(superint* siNumber1, superint* siNumber2);
 
 		/// <summary>
 		/// Converts the super integer to a string.
@@ -102,28 +102,28 @@ namespace SuperIntW64 {
 		/// <param name="usiNumber1"></param>
 		/// <param name="usiNumber2"></param>
 		/// <returns></returns>
-		static superint* _uAdd(superint usiNumber1, superint usiNumber2);
+		static superint* _uAdd(superint* usiNumber1, superint* usiNumber2);
 		/// <summary>
 		/// Ignores the sign when doing subtraction operations.
 		/// </summary>
 		/// <param name="usiNumber1"></param>
 		/// <param name="usiNumber2"></param>
 		/// <returns></returns>
-		static superint* _uSub(superint usiNumber1, superint usiNumber2);
+		static superint* _uSub(superint* usiNumber1, superint* usiNumber2);
 		/// <summary>
 		/// Ignores the sign when doing multiplication operations.
 		/// </summary>
 		/// <param name="usiNumber1"></param>
 		/// <param name="usiNumber2"></param>
 		/// <returns></returns>
-		static superint* _uMult(superint usiNumber1, superint usiNumber2);
+		static superint* _uMult(superint* usiNumber1, superint* usiNumber2);
 		/// <summary>
 		/// Ignores the sign when doing division operations.
 		/// </summary>
 		/// <param name="usiNumber1"></param>
 		/// <param name="usiNumber2"></param>
 		/// <returns></returns>
-		static superint* _uDiv(superint usiNumber1, superint usiNumber2);
+		static superint* _uDiv(superint* usiNumber1, superint* usiNumber2);
 
 		/// <summary>
 		/// Formats vNumber if it is in the incorrect format.
