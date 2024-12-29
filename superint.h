@@ -1,4 +1,4 @@
-// Created by: Cian McNamara, December 28th 2024
+// Created by: Cian McNamara (cian@telecomeireann.ie), December 28th 2024
 
 #pragma once
 
@@ -110,20 +110,6 @@ namespace SuperIntW64 {
 		/// <param name="usiNumber2"></param>
 		/// <returns></returns>
 		static superint* _uSub(superint* usiNumber1, superint* usiNumber2);
-		/// <summary>
-		/// Ignores the sign when doing multiplication operations.
-		/// </summary>
-		/// <param name="usiNumber1"></param>
-		/// <param name="usiNumber2"></param>
-		/// <returns></returns>
-		static superint* _uMult(superint* usiNumber1, superint* usiNumber2);
-		/// <summary>
-		/// Ignores the sign when doing division operations.
-		/// </summary>
-		/// <param name="usiNumber1"></param>
-		/// <param name="usiNumber2"></param>
-		/// <returns></returns>
-		static superint* _uDiv(superint* usiNumber1, superint* usiNumber2);
 
 		/// <summary>
 		/// Formats vNumber if it is in the incorrect format.
@@ -155,6 +141,12 @@ namespace SuperIntW64 {
 		/// Removes the leading zeroes from vNumber.
 		/// </summary>
 		void removeLeadingZeroes();
+		/// <summary>
+		/// Inserts a given input to a potentially out of range location in a list.
+		/// </summary>
+		/// <param name="location"></param>
+		/// <param name="input"></param>
+		void insertAtLocation(int location, int input);
 
 		/// <summary>
 		/// Checks if the string is a valid number.

@@ -1,4 +1,4 @@
-// Created by: Cian McNamara, December 28th 2024
+// Created by: Cian McNamara (cian@telecomeireann.ie), December 28th 2024
 
 #include <vector>
 #include <string>
@@ -161,6 +161,39 @@ superint* superint::_uSub(superint* usiNumber1, superint* usiNumber2) {
 	usiResult->format();
 
 	return usiResult;
+}
+
+superint* superint::Mult(superint* siNumber1, superint* siNumber2) {
+	superint* siResult = new superint();
+
+	if (siNumber1->vNumber.size() < siNumber2->vNumber.size()) {
+		std::swap(siNumber1->vNumber, siNumber2->vNumber);
+	}
+
+	for (int offset = 0; offset < siNumber1->vNumber.size(); offset++) {
+		superint* siTemp = new superint();
+
+		for (int i = 0; i < siNumber2->vNumber.size(); i++) {
+			int selection_a = siNumber1->vNumber[offset];
+			int selection_b = siNumber2->vNumber[i];
+			siTemp->insertAtLocation(i + offset, selection_a * selection_b);
+		}
+
+		siTemp->format();
+		siResult = Add(siResult, siTemp);
+	}
+
+	siResult->format();
+
+	if (siNumber2->IsNegative() && !siNumber1->IsNegative()) {
+		siResult->_isNegative = true;
+	} else if (!siNumber2->IsNegative() && siNumber1->IsNegative()) {
+		siResult->_isNegative = true;
+	} else {
+		siResult->_isNegative = false;
+	}
+
+	return siResult;
 }
 
 bool superint::isValidNumber(std::string sNumber) {
