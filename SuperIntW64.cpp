@@ -123,6 +123,28 @@ superint* superint::_uAdd(superint usiNumber1, superint usiNumber2) {
 	return usiResult;
 }
 
+superint* superint::_uSub(superint usiNumber1, superint usiNumber2) {
+	superint* usiResult = new superint();
+
+	// Ladies and gentlemen, lets not sign the unsigned.
+	if (IsLesser(usiNumber1, usiNumber2)) {
+		throw std::exception("LHS is less than RHS.");
+	}
+
+	// Takes the two numbers away from eachother at each index.
+	for (int i = 0; i < usiNumber1.vNumber.size(); i++) {
+		if (i < usiNumber2.vNumber.size()) {
+			usiResult->vNumber[i] = usiNumber1.vNumber[i] - usiNumber2.vNumber[i];
+		} else {
+			usiResult->vNumber[i] = usiNumber1.vNumber[i];
+		}
+	}
+
+	usiResult->format();
+
+	return usiResult;
+}
+
 bool superint::isValidNumber(std::string sNumber) {
 	if (sNumber.size() >= 1) {
 		for (int i = 0; i < sNumber.length(); i++) {
