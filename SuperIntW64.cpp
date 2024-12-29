@@ -133,6 +133,12 @@ superint* superint::_uAdd(superint* usiNumber1, superint* usiNumber2) {
 
 superint* superint::Sub(superint* siNumber1, superint* siNumber2) {
 	superint* siResult = new superint();
+
+	siNumber2->_isNegative = !siNumber2->_isNegative;
+
+	siResult = Add(siNumber1, siNumber2);
+
+	return siResult;
 }
 
 superint* superint::_uSub(superint* usiNumber1, superint* usiNumber2) {
