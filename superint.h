@@ -29,18 +29,24 @@ namespace SuperIntW64 {
 		/// Creates a new super integer object.
 		/// </summary>
 		superint(std::string sNumber);
-		///<summary>
+		/// <summary>
 		/// Creates a new super integer object.
 		/// </summary>
 		superint(long lNumber);
 		/// <summary>
 		/// Creates a new super integer object.
 		/// </summary>
-		superint(std::vector<int> vNumber);
+		superint(std::vector<int>* vNumber);
 		/// <summary>
 		/// Creates a new super integer object.
 		/// </summary>
-		superint(std::vector<int> vNumber, bool isNegative);
+		superint(std::vector<int>* vNumber, bool isNegative);
+
+		/// <summary>
+		/// Sets up the super integer object from a string input.
+		/// </summary>
+		/// <param name="sNumber"></param>
+		void sInit(std::string sNumber);
 
 		/// <summary>
 		/// Adds two super integers together.

@@ -23,10 +23,35 @@ const bool superint::IsReady() {
 superint::superint() {
 	this->_isNegative = false;
 	this->_isReady = true;
-	this->vNumber = { 0 };
 }
 
 superint::superint(std::string sNumber) {
+	sInit(sNumber);
+}
+
+superint::superint(long lNumber) {
+	sInit(std::to_string(lNumber));
+}
+
+superint::superint(std::vector<int>* vNumber) {
+	this->vNumber = *vNumber;
+	this->_isNegative = false;
+
+	format();
+
+	this->_isReady = true;
+}
+
+superint::superint(std::vector<int>* vNumber, bool isNegative) {
+	this->vNumber = *vNumber;
+	this->_isNegative = isNegative;
+
+	format();
+
+	this->_isReady = true;
+}
+
+void superint::sInit(std::string sNumber) {
 	this->_isNegative = isNumberNegative(sNumber);
 
 	// If the number is negative remove the minus sign from the start of the string.
@@ -46,127 +71,72 @@ superint::superint(std::string sNumber) {
 	}
 }
 
-superint::superint(long lNumber) {
-	superint(std::to_string(lNumber));
-}
-
-superint::superint(std::vector<int> vNumber) {
-	this->vNumber = vNumber;
-	this->_isNegative = false;
-
-	format();
-
-	this->_isReady = true;
-}
-
-superint::superint(std::vector<int> vNumber, bool isNegative) {
-	this->vNumber = vNumber;
-	this->_isNegative = isNegative;
-
-	format();
-
-	this->_isReady = true;
-}
-
-// Methods
+// Public Methods
 std::string superint::ToString() {
 	std::string sNumber = "";
 
+	if (hasLeadingZeroes()) {
+		removeLeadingZeroes();
+	}
+
 	if (this->_isNegative) {
-		sNumber += "-";
+		sNumber = sNumber + "-";
+	}
+
+	if (vNumber.empty()) {
+		sNumber = sNumber + "0";
 	}
 
 	for (int i = vNumber.size() - 1; i >= 0; i--) {
-		sNumber += std::to_string(vNumber[i]);
+		sNumber = sNumber + std::to_string(vNumber[i]);
 	}
 
 	return sNumber;
 }
 
+std::vector<int> superint::GetVector() {
+	return this->vNumber;
+}
+
 superint* superint::Add(superint* siNumber1, superint* siNumber2) {
 	superint* siResult = new superint();
 
-	superint* usiNumber1 = new superint(siNumber1->vNumber);
-	superint* usiNumber2 = new superint(siNumber2->vNumber);
-
 	// Executes the correct unsigned operation then adds the sign to the result.
-	if (siNumber1->IsNegative() && siNumber2->IsNegative()) {
-		siResult = _uAdd(usiNumber1, usiNumber2);
-		siResult->_isNegative = true;
-	} else if (!siNumber1->IsNegative() && !siNumber2->IsNegative()) {
-		siResult = _uAdd(usiNumber1, usiNumber2);
+	if (!(siNumber1->IsNegative() || siNumber2->IsNegative())) {
+		siResult = _uAdd(siNumber1, siNumber2);
 		siResult->_isNegative = false;
-	} else {
-		if (IsGreater(usiNumber2, usiNumber1) && siNumber2->IsNegative()) {
-			siResult = _uSub(usiNumber2, usiNumber1);
-			siResult->_isNegative = true;
-		} else if (IsGreater(usiNumber2, usiNumber1) && !siNumber2->IsNegative()) {
-			siResult = _uAdd(usiNumber2, usiNumber1);
-			siResult->_isNegative = false;
-		} else if (IsGreater(usiNumber1, usiNumber2) && !siNumber2->IsNegative()) {
-			siResult = _uSub(usiNumber1, usiNumber2);
-			siResult->_isNegative = false;
-		} else {
-			siResult = _uSub(usiNumber1, usiNumber2);
-			siResult->_isNegative = true;
-		}
+	} else if (siNumber1->IsNegative() && siNumber2->IsNegative()) {
+		siResult = _uAdd(siNumber1, siNumber2);
+		siResult->_isNegative = true;
+	} else if (siNumber1->IsNegative() && !siNumber2->IsNegative()) {
+		siResult = _uSub(siNumber1, siNumber2);
+		siResult->_isNegative = true;
+	} else if (!siNumber1->IsNegative() && siNumber2->IsNegative()) {
+		siResult = _uSub(siNumber1, siNumber2);
+		siResult->_isNegative = false;
 	}
-
-	siResult->format();
 
 	return siResult;
-}
-
-superint* superint::_uAdd(superint* usiNumber1, superint* usiNumber2) {
-	superint* usiResult = new superint();
-
-	if (usiNumber1->vNumber.size() < usiNumber2->vNumber.size()) {
-		std::swap(usiNumber1->vNumber, usiNumber2->vNumber);
-	}
-
-	for (int i = 0; i < usiNumber1->vNumber.size(); i++) {
-		if (i < usiNumber2->vNumber.size()) {
-			usiResult->vNumber[i] = usiNumber1->vNumber[i] + usiNumber2->vNumber[i];
-		} else {
-			usiResult->vNumber[i] = usiNumber1->vNumber[i];
-		}
-	}
-
-	usiResult->format();
-
-	return usiResult;
 }
 
 superint* superint::Sub(superint* siNumber1, superint* siNumber2) {
 	superint* siResult = new superint();
 
-	siNumber2->_isNegative = !siNumber2->_isNegative;
-
-	siResult = Add(siNumber1, siNumber2);
+	if (!(siNumber1->IsNegative() || siNumber2->IsNegative())) {
+		siResult = _uSub(siNumber1, siNumber2);
+		siResult->_isNegative = false;
+	} else if (siNumber1->IsNegative() && siNumber2->IsNegative()) {
+		siNumber2->_isNegative = false;
+		siResult = Add(siNumber1, siNumber2);
+	} else if (siNumber1->IsNegative() && !siNumber2->IsNegative()) {
+		siResult = _uAdd(siNumber1, siNumber2);
+		siResult->_isNegative = true;
+	} else if (!siNumber1->IsNegative() && siNumber2->IsNegative()) {
+		siResult = _uAdd(siNumber1, siNumber2);
+		siResult->_isNegative = false;
+	}
 
 	return siResult;
-}
-
-superint* superint::_uSub(superint* usiNumber1, superint* usiNumber2) {
-	superint* usiResult = new superint();
-
-	// Ladies and gentlemen, lets not sign the unsigned.
-	if (IsLesser(usiNumber1, usiNumber2)) {
-		throw std::exception("LHS is less than RHS.");
-	}
-
-	// Takes the two numbers away from eachother at each index.
-	for (int i = 0; i < usiNumber1->vNumber.size(); i++) {
-		if (i < usiNumber2->vNumber.size()) {
-			usiResult->vNumber[i] = usiNumber1->vNumber[i] - usiNumber2->vNumber[i];
-		} else {
-			usiResult->vNumber[i] = usiNumber1->vNumber[i];
-		}
-	}
-
-	usiResult->format();
-
-	return usiResult;
 }
 
 superint* superint::Mult(superint* siNumber1, superint* siNumber2) {
@@ -208,7 +178,7 @@ superint* superint::Div(superint* siNumber1, superint* siNumber2) {
 
 	// if y < x, answer is 0
 	if (IsLesser(siNumber1, siNumber2)) {
-		return new superint(0);
+		return new superint((long)0);
 	}
 
 	// set up our pivots
@@ -218,9 +188,9 @@ superint* superint::Div(superint* siNumber1, superint* siNumber2) {
 
 	// while y * z != x
 	while (!superint::IsEqual(superint::Mult(siNumber2, pivot), siNumber1)) {
-		// if y * z + r = x, return z
+		// if y * z + r = x, break out of the loop
 		if (superint::IsLesser(superint::Sub(siNumber1, pivot), siNumber1)) {
-			return pivot;
+			break;
 		}
 
 		// if y * z + r != x, adjust the limits of z
@@ -230,14 +200,229 @@ superint* superint::Div(superint* siNumber1, superint* siNumber2) {
 			min = pivot;
 		}
 
-		// re calculate z
+		// guess z again
 		pivot = supermath::Random(min, max);
+	}
+
+	if (siNumber2->IsNegative() && siNumber1->IsNegative() || !(siNumber2->IsNegative() || siNumber1->IsNegative())) {
+		pivot->_isNegative = false;
+	} else {
+		pivot->_isNegative = true;
 	}
 
 	// y * z = x
 	return pivot;
 }
 
+superint* superint::Mod(superint* siNumber1, superint* siNumber2) {
+	// x / y = z
+	// y * z = x
+
+	// if x < y, answer is x
+	if (IsLesser(siNumber1, siNumber2)) {
+		return siNumber1;
+	}
+
+	// set up our pivots
+	superint* min = new superint(1);
+	superint* max = siNumber2;
+	superint* pivot = supermath::Random(min, max);
+
+	// while y * z != x
+	while (!superint::IsEqual(superint::Mult(siNumber2, pivot), siNumber1)) {
+		// if y * z + r = x, break out of loop, answer found
+		if (superint::IsLesser(superint::Sub(siNumber1, pivot), siNumber1)) {
+			break;
+		}
+
+		// if y * z + r != x, adjust the limits of z
+		if (superint::IsGreater(superint::Mult(siNumber2, pivot), siNumber1)) {
+			max = pivot;
+		} else {
+			min = pivot;
+		}
+
+		// guess z again
+		pivot = supermath::Random(min, max);
+	}
+
+	superint* remainder = superint::Sub(siNumber1, pivot);
+
+	if (siNumber2->IsNegative() && siNumber1->IsNegative() || !(siNumber2->IsNegative() || siNumber1->IsNegative())) {
+		remainder->_isNegative = false;
+	} else {
+		remainder->_isNegative = true;
+	}
+
+	return remainder;
+}
+
+bool superint::IsGreater(superint* siNumber1, superint* siNumber2) {
+	if (siNumber2->IsNegative() && !siNumber1->IsNegative()) {
+		return true;
+	} else if (siNumber1->IsNegative() && !siNumber2->IsNegative()) {
+		return false;
+	} else if (siNumber1->vNumber.size() > siNumber2->vNumber.size()) {
+		return true;
+	} else if (siNumber1->vNumber.size() < siNumber2->vNumber.size()) {
+		return false;
+	} else {
+		for (int i = siNumber1->vNumber.size() - 1; i >= 0; i--) {
+			if (siNumber1->vNumber[i] > siNumber2->vNumber[i]) {
+				return true;
+			} else if (siNumber1->vNumber[i] < siNumber2->vNumber[i]) {
+				return false;
+			}
+		}
+	}
+}
+
+bool superint::IsLesser(superint* siNumber1, superint* siNumber2) {
+	if (siNumber1->vNumber.size() < siNumber2->vNumber.size()) {
+		return true;
+	} else if (siNumber1->vNumber.size() > siNumber2->vNumber.size()) {
+		return false;
+	} else {
+		for (int i = siNumber1->vNumber.size() - 1; i >= 0; i--) {
+			if (siNumber1->vNumber[i] < siNumber2->vNumber[i]) {
+				return true;
+			} else if (siNumber1->vNumber[i] > siNumber2->vNumber[i]) {
+				return false;
+			}
+		}
+	}
+}
+
+bool superint::IsEqual(superint* siNumber1, superint* siNumber2) {
+	if (!IsGreater(siNumber1, siNumber2) && !IsLesser(siNumber1, siNumber2)) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+// Private Methods
+superint* superint::_uAdd(superint* usiNumber1, superint* usiNumber2) {
+	superint* usiResult = new superint();
+
+	if (usiNumber1->vNumber.size() < usiNumber2->vNumber.size()) {
+		std::swap(usiNumber1->vNumber, usiNumber2->vNumber);
+	}
+
+	for (int i = 0; i < usiNumber1->vNumber.size(); i++) {
+		if (i < usiNumber2->vNumber.size()) {
+			usiResult->vNumber.push_back(usiNumber1->vNumber[i] + usiNumber2->vNumber[i]);
+		} else {
+			usiResult->vNumber.push_back(usiNumber1->vNumber[i]);
+		}
+	}
+
+	usiResult->format();
+
+	return usiResult;
+}
+
+superint* superint::_uSub(superint* usiNumber1, superint* usiNumber2) {
+	superint* usiResult = new superint();
+
+	// Ladies and gentlemen, lets not sign the unsigned.
+	if (IsLesser(usiNumber1, usiNumber2)) {
+		throw std::exception("LHS is less than RHS.");
+	}
+
+	// Takes the two numbers away from eachother at each index.
+	for (int i = 0; i < usiNumber1->vNumber.size(); i++) {
+		if (i < usiNumber2->vNumber.size()) {
+			usiResult->vNumber.push_back(usiNumber1->vNumber[i] - usiNumber2->vNumber[i]);
+		} else {
+			usiResult->vNumber.push_back(usiNumber1->vNumber[i]);
+		}
+	}
+
+	usiResult->format();
+
+	return usiResult;
+}
+
+void superint::format() {
+	if (!vNumber.empty()) {
+		for (int i = 0; i < vNumber.size(); i++) {
+			if (vNumber[i] >= 10) {
+				passToHigherIndex(vNumber[i], i);
+			} else if (vNumber[i] < 0) {
+				borrowFromHigherIndex(vNumber[i], i);
+			}
+		}
+
+		if (!isFormattedCorrectly()) {
+			format();
+		}
+
+		if (hasLeadingZeroes()) {
+			removeLeadingZeroes();
+		}
+	}
+}
+
+void superint::passToHigherIndex(int currentEntry, int i) {
+	int upperNumber = currentEntry / 10;
+
+	if (vNumber.size() - 1 > i) {
+		int upperEntry = vNumber[i + 1];
+		vNumber[i] = currentEntry % 10;
+		vNumber[i + 1] = upperEntry + upperNumber;
+	} else {
+		vNumber[i] = currentEntry % 10;
+		vNumber.push_back(upperNumber);
+	}
+}
+
+void superint::borrowFromHigherIndex(int currentEntry, int i) {
+	vNumber[i] = currentEntry + 10;
+	vNumber[i + 1] = vNumber[i + 1] - 1;
+}
+
+bool superint::isFormattedCorrectly() {
+	for (int i = 0; i < vNumber.size(); i++) {
+		if (vNumber[i] >= 10 || vNumber[i] < 0) {
+			return false;
+		}
+	}
+
+	return true;
+}
+
+bool superint::hasLeadingZeroes() {
+	if (vNumber.size() == 0) {
+		return false;
+	} else if (vNumber[vNumber.size() - 1] == 0) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+void superint::removeLeadingZeroes() {
+	for (int i = vNumber.size() - 1; i > 0; i--) {
+		if (vNumber[i] == 0) {
+			vNumber.pop_back();
+		} else {
+			break;
+		}
+	}
+}
+
+void superint::insertAtLocation(int location, int value) {
+	if (vNumber.size() <= location) {
+		for (int i = vNumber.size(); i < location; i++) {
+			vNumber.push_back(0);
+		}
+
+		vNumber.push_back(value);
+	} else {
+		vNumber[location] = value;
+	}
+}
 
 bool superint::isValidNumber(std::string sNumber) {
 	if (sNumber.size() >= 1) {
