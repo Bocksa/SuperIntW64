@@ -1,7 +1,8 @@
-// SuperIntW64.cpp : Defines the functions for the static library.
-//
+// Cian McNamara, 2024
+
 #include <vector>
 #include <string>
+
 #include "pch.h"
 #include "framework.h"
 #include "SuperIntW64.h"
@@ -9,11 +10,11 @@
 using superint = SuperIntW64::superint;
 
 // Properties
-const bool superint::isNegative() {
+const bool superint::IsNegative() {
 	return this->_isNegative;
 }
 
-const bool superint::isReady() {
+const bool superint::IsReady() {
 	return this->_isReady;
 }
 
@@ -26,18 +27,18 @@ superint::superint() {
 superint::superint(std::string sNumber) {
 	this->_isNegative = isNumberNegative(sNumber);
 
-	if (isNegative()) {
+	// If the number is negative remove the minus sign from the start of the string.
+	if (IsNegative()) {
 		sNumber = sNumber.erase(0, 1);
 	}
 
+	// If it is a valid number, place the numbers into the vector in reverse order.
 	if (isValidNumber(sNumber)) {
-		vNumber.clear();
-
 		for (int i = sNumber.length() - 1; i >= 0; i--) {
 			vNumber.push_back(sNumber[i] - '0');
 		}
 
-		this->_isReady = true;
+		this->_isReady = true; // Set the state of the number to ready.
 	} else {
 		throw std::exception("Invalid number");
 	}
