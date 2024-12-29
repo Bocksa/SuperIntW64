@@ -189,7 +189,9 @@ superint* superint::Div(superint* siNumber1, superint* siNumber2) {
 	// while y * z != x
 	while (!superint::IsEqual(superint::Mult(siNumber2, pivot), siNumber1)) {
 		// if y * z + r = x, break out of the loop
-		if (superint::IsLesser(superint::Sub(siNumber1, pivot), siNumber1)) {
+		if (superint::IsLesser(superint::Mult(siNumber2, pivot), siNumber1) &&
+			(superint::IsGreater(superint::Add(superint::Mult(siNumber2, pivot), siNumber2), siNumber1)
+		)) {
 			break;
 		}
 

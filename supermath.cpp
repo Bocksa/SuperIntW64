@@ -9,35 +9,39 @@
 using namespace SuperIntW64;
 
 superint* supermath::Random(superint* usiMin, superint* usiMax) {
-	std::srand(time(nullptr));
+	superint* usiResult = nullptr;
 
-	int loopCount = rand() % 101;
-	superint* usiResult = new superint("1");
+	while (true) {
+		std::srand(time(nullptr));
 
-	for (int i = 0; i < loopCount; i++) {
 		long randomNumber = std::rand() % 24411256;
+		long randomNumber2 = std::rand() % 694678937;
 
 		superint* rand = new superint(randomNumber);
-		usiResult = superint::Mult(usiResult, rand);
+		superint* rand2 = new superint(randomNumber2);
+		usiResult = superint::Mult(rand2, rand);
+
+		delete rand;
+		delete rand2;
+
+		std::vector<int>* vResult = new std::vector<int>();
+		int lowerCount = usiMin->GetVector().size();
+		int higherCount = usiMax->GetVector().size();
+
+		std::vector<int> usiResultVector = usiResult->GetVector();
+
+		for (int i = 0; i < higherCount; i++) {
+			vResult->push_back(usiResultVector[i]);
+		}
+
+		usiResult = new superint(vResult);
+
+		// if min <= result <= max then return result
+		if ((superint::IsGreater(usiResult, usiMin) || superint::IsEqual(usiResult, usiMin)) &&
+			(superint::IsLesser(usiResult, usiMax) || superint::IsEqual(usiResult, usiMax))) {
+			break;
+		}
 	}
-	
-	std::vector<int>* vResult = new std::vector<int>();
-	int lowerCount = usiMin->GetVector().size();
-	int higherCount = usiMax->GetVector().size();
 
-	std::vector<int> usiResultVector = usiResult->GetVector();
-
-	for (int i = 0; i < higherCount; i++) {
-		vResult->push_back(usiResultVector[i]);
-	}
-
-	usiResult = new superint(vResult);
-
-	// if min <= result <= max then return result
-	if ((superint::IsGreater(usiResult, usiMin) || superint::IsEqual(usiResult, usiMin)) && 
-		(superint::IsLesser(usiResult, usiMax) || superint::IsEqual(usiResult, usiMax))) {
-		return usiResult;
-	} else {
-		return Random(usiMin, usiMax);
-	}
+	return usiResult;
 }
