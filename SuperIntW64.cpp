@@ -1,4 +1,4 @@
-// Cian McNamara, 2024
+// Created by: Cian McNamara, December 28th 2024
 
 #include <vector>
 #include <string>
@@ -44,6 +44,24 @@ superint::superint(std::string sNumber) {
 	}
 }
 
+superint::superint(std::vector<int> vNumber) {
+	this->vNumber = vNumber;
+	this->_isNegative = false;
+
+	format();
+
+	this->_isReady = true;
+}
+
+superint::superint(std::vector<int> vNumber, bool isNegative) {
+	this->vNumber = vNumber;
+	this->_isNegative = isNegative;
+
+	format();
+
+	this->_isReady = true;
+}
+
 // Methods
 std::string superint::ToString() {
 	std::string sNumber = "";
@@ -57,6 +75,52 @@ std::string superint::ToString() {
 	}
 
 	return sNumber;
+}
+
+superint* superint::Add(superint siNumber1, superint siNumber2) {
+	superint* siResult = new superint();
+
+	std::vector<int> vResult;
+	std::vector<int> vNumber1 = siNumber1.GetVector();
+	std::vector<int> vNumber2 = siNumber2.GetVector();
+
+	// Swap the two numbers so vNumber1 is always the larger number.
+	if (vNumber1.size() < vNumber2.size()) {
+		std::swap(vNumber1, vNumber2);
+	}
+
+	// Add every index together.
+	for (int i = 0; i < vNumber1.size(); i++) {
+		if (i < vNumber2.size()) {
+			vResult.push_back(vNumber1[i] + vNumber2[i]);
+		} else {
+			vResult.push_back(vNumber1[i]);
+		}
+	}
+
+	siResult->vNumber = vResult;
+
+	return siResult;
+}
+
+superint* superint::_uAdd(superint usiNumber1, superint usiNumber2) {
+	superint* usiResult = new superint();
+
+	if (usiNumber1.vNumber.size() < usiNumber2.vNumber.size()) {
+		std::swap(usiNumber1.vNumber, usiNumber2.vNumber);
+	}
+
+	for (int i = 0; i < usiNumber1.vNumber.size(); i++) {
+		if (i < usiNumber2.vNumber.size()) {
+			usiResult->vNumber[i] = usiNumber1.vNumber[i] + usiNumber2.vNumber[i];
+		} else {
+			usiResult->vNumber[i] = usiNumber1.vNumber[i];
+		}
+	}
+
+	usiResult->format();
+
+	return usiResult;
 }
 
 bool superint::isValidNumber(std::string sNumber) {
