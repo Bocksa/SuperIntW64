@@ -5,9 +5,9 @@
 
 #include "pch.h"
 #include "framework.h"
-#include "SuperIntW64.h"
+#include "superint.h"
 
-using superint = SuperIntW64::superint;
+using namespace SuperIntW64;
 
 // Properties
 const bool superint::IsNegative() {

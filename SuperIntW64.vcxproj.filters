@@ -21,7 +21,7 @@
     <ClInclude Include="pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SuperIntW64.h">
+    <ClInclude Include="superint.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
