@@ -80,7 +80,7 @@ namespace SuperIntW64 {
 		/// <summary>
 		/// Converts the super integer to a string.
 		/// </summary>
-		std::string toString();
+		std::string ToString();
 
 	private:
 		/// <summary>

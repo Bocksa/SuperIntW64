@@ -45,7 +45,7 @@ superint::superint(std::string sNumber) {
 }
 
 // Methods
-std::string superint::toString() {
+std::string superint::ToString() {
 	std::string sNumber = "";
 
 	if (this->_isNegative) {
