@@ -12,6 +12,10 @@ Made to prove a point, not to solve a problem.
 🟢 Subtraction  
 🟢 Multiplication  
 🟠 Division  
+  
+🟢 Greater than (>)  
+🟢 Less than (<)  
+🟢 Equal to (==)  
 
 ## Open Problems
 ### [supermath.cpp](https://github.com/Bocksa/SuperIntW64/blob/main/supermath.cpp)
