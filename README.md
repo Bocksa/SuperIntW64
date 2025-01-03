@@ -3,14 +3,14 @@
 Made to prove a point, not to solve a problem.
 
 ## Features
-[x] Addition  
-[x] Subtraction  
-[x] Multiplication  
-[ ] Division  
+- [x] Addition  
+- [x] Subtraction  
+- [x] Multiplication  
+- [ ] Division  
   
-[x] Greater than (>)  
-[x] Less than (<)  
-[x] Equal to (==)  
+- [x] Greater than (>)  
+- [x] Less than (<)  
+- [x] Equal to (==)  
 
 ## Open Problems
 ### [supermath.cpp](https://github.com/Bocksa/SuperIntW64/blob/main/supermath.cpp)
