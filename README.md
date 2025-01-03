@@ -2,20 +2,15 @@
 
 Made to prove a point, not to solve a problem.
 
-## Symbols
-🟢 Working fully  
-🟠 Working but in a slow/impractical way  
-🔴 Broken
-
 ## Features
-🟢 Addition  
-🟢 Subtraction  
-🟢 Multiplication  
-🟠 Division  
+[x] Addition  
+[x] Subtraction  
+[x] Multiplication  
+[ ] Division  
   
-🟢 Greater than (>)  
-🟢 Less than (<)  
-🟢 Equal to (==)  
+[x] Greater than (>)  
+[x] Less than (<)  
+[x] Equal to (==)  
 
 ## Open Problems
 ### [supermath.cpp](https://github.com/Bocksa/SuperIntW64/blob/main/supermath.cpp)
